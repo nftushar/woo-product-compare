@@ -1,0 +1,92 @@
+{
+  "apiVersion": "1",
+  "name": "b-blocks/product-compare",
+  "title": "product-compare",
+  "description": "Easy-to-use, responsive product-compare",
+  "category": "widgets",
+  "keywords": [
+    "product-compare",
+    "map",
+    "Gutenberg"
+  ],
+  "textdomain": "product-compare",
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": ""
+    },
+    "cId": {
+      "type": "string",
+      "default": ""
+    },
+    "location": {
+      "type": "string",
+      "default": "Dhaka"
+    },
+    "alignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "fbUrl": {
+      "type": "string",
+      "default": "https://www.facebook.com/bPluginsLLC"
+    },
+    "btnType": {
+      "type": "string",
+      "default": "recommend"
+    },
+    "layout": {
+      "type": "string",
+      "default": "box_count"
+    },
+    "shareOffOn": {
+      "type": "string",
+      "default": "true"
+    },
+    "showFaces": {
+      "type": "string",
+      "default": "true"
+    },
+    "clrScheme": {
+      "type": "string",
+      "default": "dark"
+    },
+    "size": {
+      "type": "string",
+      "default": "large"
+    },
+    "background": {
+      "type": "object",
+      "default": {
+        "color": "#0000"
+      }
+    },
+    "padding": {
+      "type": "object",
+      "default": {
+        "top": "20px",
+        "right": "20px",
+        "bottom": "20px",
+        "left": "20px"
+      }
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "columns": {
+        "desktop": 1,
+        "tablet": 1,
+        "mobile": 1
+      }
+    }
+  },
+  "editorScript": "file:../dist/editor.js"
+}
