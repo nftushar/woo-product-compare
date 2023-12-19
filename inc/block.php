@@ -33,6 +33,10 @@ class BBlockProductCompare
 
         <div class='<?php echo $blockClassName; ?>' id='bBlocksPath-<?php echo esc_attr($cId); ?>' data-attributes='<?php echo wp_json_encode($attributes); ?>'>
             <?php
+
+
+
+
             // WooCommerce code start
             if (class_exists('WooCommerce')) {
                 // Output the product Compare
@@ -45,41 +49,16 @@ class BBlockProductCompare
         return ob_get_clean();
     }
 
-    private function outputProductCompare($atts)
-    {
-        $atts = shortcode_atts(
-            array(
-                'tag'   => 'hoodies',
-                'count' => 3,
-            ),
-            $atts
-        );
-
-        $tag    = explode(',', sanitize_text_field($atts['tag']));
-        $count  = sanitize_text_field($atts['count']);
-
-        $query = array(
-            'post_type'      => 'product',
-            'post_status'    => 'publish',
-            'posts_per_page' => $count,
-            'tax_query'      => array(
-                array(
-                    'taxonomy' => 'product_cat',
-                    'field'    => 'slug',
-                    'terms'    => $tag,
-                )
-            ),
-        );
-
-        $products = new WP_Query($query);
-
-        $productsNew = wc_get_products([
+    private function outputProductCompare(){
+        $products = wc_get_products([
             'limit' => -1,
             'status' => 'publish',
-            'include' => array(250, 178, 168)
+            'include' => [59, 178, 168, 172]
         ]);
 
-
+        echo "<pre>"; 
+        print_r(count($products));
+        echo"</pre>";
 
         // $tableData = [['Title', 'Permalink', 'Description', 'Image', 'Price', 'SKU', 'Availability', 'Color', 'Size']];
         $tableData = [
@@ -94,18 +73,9 @@ class BBlockProductCompare
             'size' => []
         ];
 
-        foreach ($productsNew as $index => $product) {
-            // $tableData[ $index + 1 ] = [
-            //     $product->get_title(),
-            //     'placeholder description',
-            //     'placeholder image',
-            //     'placeholder price',
-            //     'placeholder sku',
-            //     'placeholder availability',
-            //     'placeholder color',
-            //     'placeholder size',
-            // ];
-            // echo"1"; 
+        foreach ($products as $index => $product) {
+
+            // $tableData['id'][$index]   =       $product->wc_get_product(get_the_id());
             $tableData['title'][$index]        = $product->get_title();
             $tableData['permalink'][$index]    = "permalink $index";
             $tableData['description'][$index]  = $product->get_description();
@@ -115,10 +85,6 @@ class BBlockProductCompare
             $tableData['availability'][$index] = $product->is_in_stock() ? 'In stock' : 'Out of stock';
             $tableData['color'][$index]        = $product->get_attribute('color');
             $tableData['size'][$index]         = $product->get_attribute('size');
-
-            // echo "<pre>";
-            // print_r($product->get_title());
-            // echo "</pre>";
         }
     ?>
 
@@ -152,118 +118,10 @@ class BBlockProductCompare
                         }
                     }
 
-                    while ($products->have_posts()) :
-                        $products->the_post();
-                        $this->outputProductDetails();
-                    endwhile;
-                    wp_reset_postdata();
                     ?>
                 </tbody>
             </table>
         </div>
-
-    <?php
-        wp_reset_postdata();
-    }
-
-    private function outputProductDetails()
-    {
-        $title        = get_the_title();
-        $permalink    = get_the_permalink();
-        $description  = get_the_content();
-        $product      = wc_get_product(get_the_id());
-        $image        = $product->get_image();
-        $price        = $product->get_price_html();
-        $sku          = $product->get_sku();
-        $availability = $product->is_in_stock() ? 'In stock' : 'Out of stock';
-        $colors       = $product->get_attribute('color');
-        $sizes        = $product->get_attribute('size');
-    ?>
-
-        <!-- <tr class="title">
-            <th class="thead first-th">
-                <div class="wcpc-table-header">
-                    <span class="field-name">Title x</span>
-                </div>
-            </th>
-            <td class="odd col_0 product_168">
-                <span><a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($title); ?></a></span>
-            </td>
-        </tr>
-        <tr class="description">
-            <th class="thead">
-                <div class="wcpc-table-header">
-                    <span class="field-name">Description</span>
-                </div>
-            </th>
-            <td class="odd col_0 product_168">
-                <span>
-                    <p><?php echo esc_html($description); ?></p>
-                </span>
-            </td>
-        </tr>
-        <tr class="image">
-            <th class="thead">
-                <div class="wcpc-table-header">
-                    <h1 class="wcpc-title">Compare Products</h1>
-                </div>
-            </th>
-            <td class="odd col_0 product_168">
-                <span>
-                    <span class="img-inner"><?php echo $image; ?></span>
-                </span>
-            </td>
-        </tr>
-        <tr class="price">
-            <th class="thead">
-                <div class="wcpc-table-header">
-                    <span class="field-name">Price</span>
-                </div>
-            </th>
-            <td class="even col_1 product_158">
-                <span><?php echo $price; ?></span>
-            </td>
-        </tr>
-        <tr class="sku">
-            <th class="thead">
-                <div class="wcpc-table-header">
-                    <span class="field-name">SKU</span>
-                </div>
-            </th>
-            <td class="even col_1 product_158">
-                <span><?php echo esc_html($sku); ?></span>
-            </td>
-        </tr>
-        <tr class="availability">
-            <th class="thead">
-                <div class="wcpc-table-header">
-                    <span class="field-name">Availability</span>
-                </div>
-            </th>
-            <td class="even col_1 product_158">
-                <span><?php echo esc_html($availability); ?></span>
-            </td>
-        </tr>
-        <tr class="color">
-            <th class="thead">
-                <div class="wcpc-table-header">
-                    <span class="field-name">Color</span>
-                </div>
-            </th>
-            <td class="even col_1 product_158">
-                <span><?php echo esc_html($colors); ?></span>
-            </td>
-        </tr>
-        <tr class="size">
-            <th class="thead">
-                <div class="wcpc-table-header">
-                    <span class="field-name">Size</span>
-                </div>
-            </th>
-            <td class="even col_1 product_158">
-                <span><?php echo esc_html($sizes); ?></span>
-            </td>
-        </tr> -->
 
 <?php
     }
