@@ -1,21 +1,37 @@
 /* eslint-disable no-undef */
-// import { useState } from 'react';
+import { useState } from 'react';
 import { __ } from "@wordpress/i18n";
 import { InspectorControls } from "@wordpress/block-editor";
 import { PanelBody, TabPanel, TextControl, __experimentalBoxControl as BoxControl, ToggleControl, SelectControl } from "@wordpress/components";
 
-import { BtnGroup } from "../../Components";
+import { BtnGroup, MultiSelectControl, SelectPureControl } from "../../Components";
+import { useEffect } from '@wordpress/element';
+import { Spinner } from '@wordpress/components';
 
 const mapAlignments = [
-	{ label: __('left', 'fb-button'), value: 'left', icon: 'editor-alignleft' },
-	{ label: __('center', 'fb-button'), value: 'center', icon: 'editor-aligncenter' },
-	{ label: __('right', 'fb-button'), value: 'right', icon: 'editor-alignright' }
+	{ label: __('left', 'wcpc'), value: 'left', icon: 'editor-alignleft' },
+	{ label: __('center', 'wcpc'), value: 'center', icon: 'editor-aligncenter' },
+	{ label: __('right', 'wcpc'), value: 'right', icon: 'editor-alignright' }
 ];
 
-const Settings = ({ attributes, setAttributes }) => {
-	const { padding, alignment, btnType, fbUrl, layout, clrScheme, size, shareOffOn, showFaces } = attributes;
+const options = [
+	{ label: 'Option 1', value: 'option1' },
+	{ label: 'Option 2', value: 'option2' },
+	{ label: 'Option 3', value: 'option3' },
+];
 
-	// console.log(btnType); 
+
+const Settings = ({ attributes, setAttributes, products }) => {
+	const { productIds, padding, alignment, btnType, fbUrl, layout, clrScheme, size, shareOffOn, showFaces } = attributes;
+	const [ids, setIds] = useState([]);
+
+	useEffect(() => {
+		if (products?.length) {
+			setIds(products.map(p => ({ label: p.title, value: p.id })))
+		}
+	}, [products])
+
+	console.log(productIds);
 
 	return (
 		<InspectorControls>
@@ -29,23 +45,36 @@ const Settings = ({ attributes, setAttributes }) => {
 				{(tab) => <>
 					{tab.name === "general" && <PanelBody
 						className="bPlPanelBody"
-						title={__("FaceBook Button", "fb-button")} 	>
+						title={__("FaceBook Button", "wcpc")}>
+
+						{ids?.length ? <MultiSelectControl value={productIds} onChange={val => setAttributes({ productIds: val })} options={ids} /> : <Spinner />}
+
+						{/* {ids?.length ? <SelectPureControl
+							label={__("Select Products", "wcpc")}
+							value={[]}
+							// value={ids.map(p => p.id)?.filter(i => productIds.indexOf(i) !== -1)?.map(i => i.toString())}
+							onChange={val => console.log(val)}
+							// onChange={val => setAttributes({ productIds: val.map(i => parseInt(i)) })}
+							options={ids}
+						/> : <Spinner />} */}
+
+
 						<TextControl
 							className="mt20"
-							label={__("FaceBook", "fb-button")}
+							label={__("FaceBook", "wcpc")}
 							value={fbUrl}
 							onChange={(val) => setAttributes({ fbUrl: val })}
 						/>
 						<ToggleControl
 							className="mt20"
-							label={__("Share Button", "fb-button")}
+							label={__("Share Button", "wcpc")}
 							value={shareOffOn}
 							checked={shareOffOn}
 							onChange={(val) => setAttributes({ shareOffOn: val })}
 						/>
 						<ToggleControl
 							className="mt20"
-							label={__("Show Faces", "fb-button")}
+							label={__("Show Faces", "wcpc")}
 							value={showFaces}
 							checked={showFaces}
 							onChange={(val) => setAttributes({ showFaces: val })}
@@ -98,16 +127,16 @@ const Settings = ({ attributes, setAttributes }) => {
 					{tab.name === "style" && <>
 						<PanelBody
 							className="bPlPanelBody"
-							title={__("Button Control", "fb-button")}>
+							title={__("Button Control", "wcpc")}>
 
 							<BtnGroup
 								className="mb20"
-								label={__("Alignment", "fb-button")}
+								label={__("Alignment", "wcpc")}
 								value={alignment}
 								onChange={val => setAttributes({ alignment: val })}
 								options={mapAlignments} isIcon={true} />
 							<BoxControl
-								label={__("Padding", "fb-button")}
+								label={__("Padding", "wcpc")}
 								values={padding}
 								resetValues={{
 									"top": "0px",

@@ -5,8 +5,8 @@ const Style = ({ attributes, clientId }) => {
   const {padding, alignment } = attributes;
 
 
-  const mainSl = `#bBlocks-fb-button-${clientId}`;
-  const mainCt = `${mainSl} .fb-button-container`; 
+  const mainSl = `#bBlocks-p-compare-${clientId}`;
+  const mainCt = `${mainSl} .p-compare-container`; 
 
   return (
     <style dangerouslySetInnerHTML={{

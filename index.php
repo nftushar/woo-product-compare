@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: zzz Product Compare
+ * Plugin Name: Product Compare
  * Description: responsive Product Compare for wordpress and more..
  * Version: 1.0.0
  * Author: bPlugins LLC
@@ -8,11 +8,8 @@
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain: woopc
- */
+ */ 
 
-// ABS PATH
-// if ( !defined( 'ABSPATH' ) ) { exit; }
- 
 // // Constant
 // define( 'B_BLOCKS_VERSION', isset( $_SERVER['HTTP_HOST'] ) && 'localhost' === $_SERVER['HTTP_HOST'] ? time() : '1.7.8' );
 // define( 'B_BLOCKS_DIR_URL', plugin_dir_url( __FILE__ ) );
