@@ -1,14 +1,14 @@
-// Edit.js
-import React, { useEffect } from 'react';
+ import React, { useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { Disabled, Spinner } from '@wordpress/components';
 const { serverSideRender: ServerSideRender } = wp;
+import "./style.scss";
 
 import Settings from './Settings';
 // import Style from './Style';
 
-const Edit = ({ name, className, attributes, setAttributes, clientId, isSelected, products }) => {
+const Edit = ({ name, className, attributes, setAttributes, clientId, products }) => {
 
 
   useEffect(() => {

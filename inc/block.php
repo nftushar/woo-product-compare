@@ -7,7 +7,7 @@ class BBlockProductCompare
     }
 
     public function onInit()
-    {
+    { 
         wp_register_style('bBlocks-p-compare-style', plugins_url('dist/style.css', __DIR__), [], B_BLOCKS_VERSION);
         wp_register_style('bBlocks-p-compare-editor-style', plugins_url('dist/editor.css', __DIR__), ['bBlocks-p-compare-style'], B_BLOCKS_VERSION);
 
@@ -28,6 +28,7 @@ class BBlockProductCompare
 
         wp_enqueue_style('bBlocks-p-compare-style');
         wp_enqueue_script('bBlocks-p-compare-script', plugins_url('dist/script.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
+        wp_enqueue_script('bBlocks-p-compare-style-js', plugins_url('src/Style.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
 
         $className = $className ?? '';
         $blockClassName = esc_attr("bBlocks-p-compare $className");

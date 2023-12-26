@@ -4,21 +4,21 @@ import { __ } from "@wordpress/i18n";
 import { InspectorControls } from "@wordpress/block-editor";
 import { PanelBody, TabPanel, TextControl, __experimentalBoxControl as BoxControl, ToggleControl, SelectControl } from "@wordpress/components";
 
-import { BtnGroup, MultiSelectControl, SelectPureControl } from "../../Components";
+import { BtnGroup, MultiSelectControl } from "../../Components";
 import { useEffect } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
 
-const mapAlignments = [
+const wcpcAlignments = [
 	{ label: __('left', 'wcpc'), value: 'left', icon: 'editor-alignleft' },
 	{ label: __('center', 'wcpc'), value: 'center', icon: 'editor-aligncenter' },
 	{ label: __('right', 'wcpc'), value: 'right', icon: 'editor-alignright' }
 ];
 
-const options = [
-	{ label: 'Option 1', value: 'option1' },
-	{ label: 'Option 2', value: 'option2' },
-	{ label: 'Option 3', value: 'option3' },
-];
+// const options = [
+// 	{ label: 'Option 1', value: 'option1' },
+// 	{ label: 'Option 2', value: 'option2' },
+// 	{ label: 'Option 3', value: 'option3' },
+// ];
 
 
 const Settings = ({ attributes, setAttributes, products }) => {
@@ -30,8 +30,7 @@ const Settings = ({ attributes, setAttributes, products }) => {
 			setIds(products.map(p => ({ label: p.title, value: p.id })))
 		}
 	}, [products])
-
-	console.log(products);
+ 
 
 	return (
 		<InspectorControls>
@@ -124,7 +123,7 @@ const Settings = ({ attributes, setAttributes, products }) => {
 								label={__("Alignment", "wcpc")}
 								value={alignment}
 								onChange={val => setAttributes({ alignment: val })}
-								options={mapAlignments} isIcon={true} />
+								options={wcpcAlignments} isIcon={true} />
 							<BoxControl
 								label={__("Padding", "wcpc")}
 								values={padding}

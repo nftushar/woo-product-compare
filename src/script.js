@@ -5,13 +5,13 @@ import Style from "./Style";
 import ProductCompare from './components/ProductCompare';
 
 document.addEventListener("DOMContentLoaded", () => {
-    const mapEls = document.querySelectorAll(".wp-block-p-compare");
-    mapEls.forEach((mapEl) => {
-        const attributes = JSON.parse(mapEl.dataset.attributes);
+    const wcpcEls = document.querySelectorAll(".wp-block-p-compare");
+    wcpcEls.forEach((wcpcEl) => {
+        const attributes = JSON.parse(wcpcEl.dataset.attributes);
         const { cId } = attributes;
 
-        createRoot(mapEl).render(
-            <> 
+        createRoot(wcpcEl).render(
+            <>  
                 <div id={`bBlocks-p-compare-${cId}`} >
                     <Style attributes={attributes} clientId={cId} />
                     <ProductCompare attributes={attributes} clientId={cId} />
@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
             </>
         );
 
-        mapEl?.removeAttribute("data-attributes");
+        wcpcEl?.removeAttribute("data-attributes");
     });
 }); 
+
+
