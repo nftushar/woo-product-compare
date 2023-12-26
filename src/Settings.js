@@ -31,7 +31,7 @@ const Settings = ({ attributes, setAttributes, products }) => {
 		}
 	}, [products])
 
-	console.log(productIds);
+	console.log(products);
 
 	return (
 		<InspectorControls>
@@ -48,16 +48,6 @@ const Settings = ({ attributes, setAttributes, products }) => {
 						title={__("FaceBook Button", "wcpc")}>
 
 						{ids?.length ? <MultiSelectControl value={productIds} onChange={val => setAttributes({ productIds: val })} options={ids} /> : <Spinner />}
-
-						{/* {ids?.length ? <SelectPureControl
-							label={__("Select Products", "wcpc")}
-							value={[]}
-							// value={ids.map(p => p.id)?.filter(i => productIds.indexOf(i) !== -1)?.map(i => i.toString())}
-							onChange={val => console.log(val)}
-							// onChange={val => setAttributes({ productIds: val.map(i => parseInt(i)) })}
-							options={ids}
-						/> : <Spinner />} */}
-
 
 						<TextControl
 							className="mt20"

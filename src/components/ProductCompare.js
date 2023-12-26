@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ProductCompare({ products, imageUrl }) {
+function ProductCompare({ products }) {
     if (!products || !Array.isArray(products) || products.length === 0) {
         return <p>No product data available.</p>;
     }

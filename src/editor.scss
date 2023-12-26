@@ -1,3 +1,5 @@
+$primaryColor: #4527a4;
+
 .wp-block-p-compare {
 	.mouse {
 		position: absolute;
@@ -6,17 +8,49 @@
 		z-index: 5;
 	}
 }
-.p-compare-container .pluginFontVerdana div{
+.p-compare-container .pluginFontVerdana div {
 	display: flex;
 	justify-content: center;
-  }
-
- .pluginFontHelvetica div{
-    display: flex;
-    justify-content: center;
 }
-  
-  ._li._li._li {
-    overflow: initial;
-    display: flex;
-    justify-content: center;}
+
+.pluginFontHelvetica div {
+	display: flex;
+	justify-content: center;
+}
+
+._li._li._li {
+	overflow: initial;
+	display: flex;
+	justify-content: center;
+}
+
+.wrpLoader {
+	min-height: 30px;
+	position: relative;
+
+	&.showLoader {
+		.wp-block-wrp-recent-products {
+			opacity: 0.3;
+			z-index: 0;
+		}
+	}
+}
+
+.wrpLoading {
+	color: $primaryColor !important;
+	font-size: 21px !important;
+	font-weight: bold !important;
+	display: flex;
+	align-items: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	margin: 0;
+	z-index: 1;
+
+	.components-spinner {
+		margin-top: 0;
+		color: $primaryColor;
+	}
+}

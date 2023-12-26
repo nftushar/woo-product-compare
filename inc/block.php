@@ -25,8 +25,6 @@ class BBlockProductCompare
 
         $productIds = $attributes['productIds'];
 
-        echo "Product IDs: ";
-        print_r($productIds);
 
         wp_enqueue_style('bBlocks-p-compare-style');
         wp_enqueue_script('bBlocks-p-compare-script', plugins_url('dist/script.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
@@ -38,11 +36,8 @@ class BBlockProductCompare
 
         <div class='<?php echo $blockClassName; ?>' id='bBlocks-p-compare-<?php echo esc_attr($cId); ?>' data-attributes='<?php echo wp_json_encode($attributes); ?>'>
             <?php
-
-            // WooCommerce code start
             if (class_exists('WooCommerce')) {
-                // Output the product Compare
-                $this->outputProductCompare(['tag' => 'hoodies', 'count' => 20, 'productIds' => $productIds]);
+                $this->outputProductCompare($productIds);
             }
             ?>
         </div>
@@ -51,19 +46,15 @@ class BBlockProductCompare
         return ob_get_clean();
     }
 
-    private function outputProductCompare($args)
+    private function outputProductCompare($productIds)
     {
-
-        $productIds = $args['productIds'];
-        echo "Product IDs: ";
-        print_r($productIds);
-
+        
         $products = wc_get_products([
             'limit'   => -1,
             'status'  => 'publish',
             'include' => $productIds,
         ]);
-        
+
         $tableData = [
             'Title'        => [],
             'Permalink'    => [],
@@ -89,7 +80,8 @@ class BBlockProductCompare
             $tableData['SKU'][$index]          = $product->get_sku();
             $tableData['Availability'][$index] = $product->is_in_stock() ? 'In stock' : 'Out of stock';
             $tableData['Weight'][$index]       = $product->get_weight();
-            $tableData['Dimension'][$index]    = $product->get_dimensions();
+            // $tableData['Dimension'][$index]    = $product->get_dimensions();
+            $tableData['Dimension'][$index] = wc_format_dimensions($product->get_dimensions(false));
             $tableData['Color'][$index]        = $product->get_attribute('Color');
             $tableData['Size'][$index]         = $product->get_attribute('Size');
         }
