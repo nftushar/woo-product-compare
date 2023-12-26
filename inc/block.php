@@ -7,7 +7,7 @@ class BBlockProductCompare
     }
 
     public function onInit()
-    { 
+    {
         wp_register_style('bBlocks-p-compare-style', plugins_url('dist/style.css', __DIR__), [], B_BLOCKS_VERSION);
         wp_register_style('bBlocks-p-compare-editor-style', plugins_url('dist/editor.css', __DIR__), ['bBlocks-p-compare-style'], B_BLOCKS_VERSION);
 
@@ -23,6 +23,11 @@ class BBlockProductCompare
     {
         extract($attributes);
 
+        // printf($attributes);
+
+        ['cId' => $cId, 'productIds' => $productIds, 'alignment' => $alignment, 'location' => $location, 'fbUrl' => $fbUrl, 'btnType' => $btnType, 'layout' => $layout, 'shareOffOn' => $shareOffOn, 'showFaces' => $showFaces,  'size' => $size, 'background' => $background, 'padding' => $padding] = $attributes;
+
+        // printf($padding);
 
         wp_enqueue_style('bBlocks-p-compare-style');
         wp_enqueue_script('bBlocks-p-compare-script', plugins_url('dist/script.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
@@ -33,11 +38,23 @@ class BBlockProductCompare
         ob_start(); ?>
 
         <div class='<?php echo $blockClassName; ?>' id='bBlocks-p-compare-<?php echo esc_attr($cId); ?>' data-attributes='<?php echo wp_json_encode($attributes); ?>'>
+            <style>
+                .eael-wcpc-wrapper .eael-wcpc-table th,
+                .eael-wcpc-wrapper .eael-wcpc-table td {
+                    text-align: <?php echo $alignment; ?>;
+                    padding: <?php echo implode(' ',  $padding); ?>;
+                }
+            </style>
+
+
+
             <?php
             if (class_exists('WooCommerce')) {
                 $this->outputProductCompare($productIds);
             }
             ?>
+        </div>
+
         </div>
 
     <?php
@@ -46,7 +63,7 @@ class BBlockProductCompare
 
     private function outputProductCompare($productIds)
     {
-        
+
         $products = wc_get_products([
             'limit'   => -1,
             'status'  => 'publish',
@@ -105,7 +122,7 @@ class BBlockProductCompare
                             } else {
                                 $el = "<td>$d</td>";
                             }
-                            
+
                             $tdEl .= $el;
                         }
 
