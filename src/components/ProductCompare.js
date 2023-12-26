@@ -39,7 +39,7 @@ function ProductCompare({ products }) {
                                 <tr className="image">
                                     <th className="thead">
                                         <div className="wcpc-table-header">
-                                            <h1 className="wcpc-title">Compare Products</h1>
+                                            <h1 className="wcpc-title">Compare Products z</h1>
                                         </div>
                                     </th>
                                     <td className={`odd col_${index} product_${product.id}`}>

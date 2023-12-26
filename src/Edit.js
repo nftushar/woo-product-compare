@@ -1,4 +1,4 @@
- import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { Disabled, Spinner } from '@wordpress/components';
@@ -21,9 +21,9 @@ const Edit = ({ name, className, attributes, setAttributes, clientId, products }
       <div className={`bBlocks-p-compare ${className}`} id={`bBlocks-p-compare-${clientId}`} data-attributes={JSON.stringify(attributes)}>
         {/* <Style attributes={attributes} clientId={clientId} /> */}
 
-        <Disabled>
-          <ServerSideRender block={name} attributes={attributes} LoadingResponsePlaceholder={Loading} />
-        </Disabled>
+        {/* <Disabled> */}
+        <ServerSideRender block={name} attributes={attributes} LoadingResponsePlaceholder={Loading} />
+        {/* </Disabled> */}
       </div>
     </>
   );

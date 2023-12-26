@@ -23,12 +23,9 @@ class BBlockProductCompare
     {
         extract($attributes);
 
-        $productIds = $attributes['productIds'];
-
 
         wp_enqueue_style('bBlocks-p-compare-style');
         wp_enqueue_script('bBlocks-p-compare-script', plugins_url('dist/script.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
-        wp_enqueue_script('bBlocks-p-compare-style-js', plugins_url('src/Style.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
 
         $className = $className ?? '';
         $blockClassName = esc_attr("bBlocks-p-compare $className");
@@ -89,6 +86,7 @@ class BBlockProductCompare
     ?>
 
         <div class="eael-wcpc-wrapper woocommerce">
+
             <table class="eael-wcpc-table table-responsive">
                 <tbody>
                     <?php
@@ -103,11 +101,11 @@ class BBlockProductCompare
                             if ('Title' === $key) {
                                 $el = "<td><a href='$link'>$d</a></td>";
                             } elseif ('Image' === $key) {
-                                $el = "<td><img src='$d' alt='$title' /></td>";
+                                $el = "<td><img class='product-img' src='$d' alt='$title' /></td>";
                             } else {
                                 $el = "<td>$d</td>";
                             }
-
+                            
                             $tdEl .= $el;
                         }
 
