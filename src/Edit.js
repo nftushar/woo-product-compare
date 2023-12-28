@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { Disabled, Spinner } from '@wordpress/components';
+import { Spinner } from '@wordpress/components';
 const { serverSideRender: ServerSideRender } = wp;
 import "./style.scss";
 
 import Settings from './Settings';
-// import Style from './Style';
 
-const Edit = ({ name, className, attributes, setAttributes, clientId, products }) => {
+const Edit = ({ clientId, name, className, attributes, setAttributes, products }) => {
+  const { productIds } = attributes;
 
+
+  // console.log(productIds.length);
 
   useEffect(() => {
     clientId && setAttributes({ cId: clientId });
@@ -18,12 +20,16 @@ const Edit = ({ name, className, attributes, setAttributes, clientId, products }
   return (
     <>
       <Settings attributes={attributes} setAttributes={setAttributes} products={products} />
-      <div className={`bBlocks-p-compare ${className}`} id={`bBlocks-p-compare-${clientId}`} data-attributes={JSON.stringify(attributes)}>
-        {/* <Style attributes={attributes} clientId={clientId} /> */}
+      <div className={className} id={`bBlocksProductCompare-${clientId}`}>
 
         {/* <Disabled> */}
-        <ServerSideRender block={name} attributes={attributes} LoadingResponsePlaceholder={Loading} />
+        {productIds.length ? (
+          <ServerSideRender block={name} attributes={attributes} LoadingResponsePlaceholder={Loading} />
+        ) : (
+          <h1>Select Product</h1>
+        )}
         {/* </Disabled> */}
+
       </div>
     </>
   );
@@ -40,8 +46,8 @@ export default withSelect((select) => {
   return { products };
 })(Edit);
 
-const Loading = ({ children, showLoader }) => <div className={`wrpLoader ${showLoader ? 'showLoader' : ''}`}>
-  {showLoader && <h3 className='wrpLoading'><Spinner /> {__('Loading...', 'recent-products')}</h3>}
+const Loading = ({ children, showLoader }) => <div className={`wcpcLoader ${showLoader ? 'showLoader' : ''}`}>
+  {showLoader && <h3 className='wcpcLoading'><Spinner /> {__('Loading...', 'recent-products')}</h3>}
 
   {children}
 </div>

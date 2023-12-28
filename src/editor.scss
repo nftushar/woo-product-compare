@@ -1,43 +1,32 @@
-// .eael-wcpc-wrapper {
-//   display: flex;
-//   justify-content: center;
+$primaryColor: #4527a4;
 
-//   .eael-wcpc-table {
-//     border-collapse: collapse;
-//     border-spacing: 0;
+.wcpcLoader {
+    min-height: 30px;
+    position: relative;
 
-//     th,
-//     td {
-//       padding: 12px;
-//       // text-align: left;
-//       border: 1px solid #ddd;
+    &.showLoader {
+        .wp-block-b-blocks-recent-products {
+            opacity: 0.3;
+            z-index: 0;
+        }
+    }
+}
 
-//       th {
-//         background-color: #f5f5f5;
-//       }
+.wcpcLoading {
+    color: $primaryColor !important;
+    font-size: 21px !important;
+    font-weight: bold !important;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    z-index: 1;
 
-//       .wcpc-table-header {
-//         font-weight: bold;
-//       }
-//     }
-
-//     .img-inner img {
-//       max-width: 100%;
-//       height: auto;
-//       border: 2px;
-//     }
-
-//     .add-to-cart a {
-//       display: inline-block;
-//       padding: 8px 16px;
-//       background-color: #4caf50;
-//       color: #fff;
-//       text-decoration: none;
-//       border-radius: 4px;
-
-//       &:hover {
-//         background-color: #45a049;
-//       }
-//     }
-//   }
-// }
+    .components-spinner {
+        margin-top: 0;
+        color: $primaryColor;
+    }
+}

@@ -2,11 +2,11 @@
   "apiVersion": "1",
   "name": "b-blocks/product-compare",
   "title": "product-compare",
-  "description": "Easy-to-use, woocommerce product-compare",
+  "description": "Easy-to-use, WooCommerce product-compare",
   "category": "widgets",
   "keywords": [
     "product-compare",
-    "woocommerce",
+    "WooCommerce",
     "Gutenberg"
   ],
   "textdomain": "product-compare",
@@ -23,9 +23,11 @@
       "type": "array",
       "default": []
     },
-    "location": {
-      "type": "string",
-      "default": "Dhaka"
+    "border": {
+      "type": "object",
+      "default": {
+        "radius": "5px"
+      }
     },
     "alignment": {
       "type": "string",
@@ -72,6 +74,25 @@
         "right": "20px",
         "bottom": "20px",
         "left": "20px"
+      }
+    },
+    "btnStyle": {
+      "type": "object",
+      "default": {
+        "colors": {
+          "color": "#3498db"
+        },
+        "padding": {
+          "top": "20px",
+          "left": "20px",
+          "bottom": "25px",
+          "right": "25px"
+        },
+        "typography": {
+          "fontSize": {
+            "desktop": 16
+          }
+        }
       }
     }
   },

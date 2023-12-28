@@ -1,52 +1,185 @@
 <?php
 class BBlockProductCompare
 {
+
     public function __construct()
     {
         add_action('init', [$this, 'onInit']);
     }
 
+    function getBackgroundCSS($bg, $isSolid = true, $isGradient = true, $isImage = true)
+    {
+        extract($bg);
+        $type = $type ?? 'solid';
+        $color = $color ?? '#000000b3';
+        $gradient = $gradient ?? 'linear-gradient(135deg, #4527a4, #8344c5)';
+        $image = $image ?? [];
+        $position = $position ?? 'center center';
+        $attachment = $attachment ?? 'initial';
+        $repeat = $repeat ?? 'no-repeat';
+        $size = $size ?? 'cover';
+        $overlayColor = $overlayColor ?? '#000000b3';
+
+        $gradientCSS = $isGradient ? "background: $gradient;" : '';
+
+        $imgUrl = $image['url'] ?? '';
+        $imageCSS = $isImage ? "background: url($imgUrl); background-color: $overlayColor; background-position: $position; background-size: $size; background-repeat: $repeat; background-attachment: $attachment; background-blend-mode: overlay;" : '';
+
+        $solidCSS = $isSolid ? "background: $color;" : '';
+
+        $styles = 'gradient' === $type ? $gradientCSS : ('image' === $type ? $imageCSS : $solidCSS);
+
+        return $styles;
+    }
+
+    function getBorderCSS($border)
+    {
+        extract($border);
+        $width = $width ?? '0px';
+        $style = $style ?? 'solid';
+        $color = $color ?? '#0000';
+        $side = $side ?? 'all';
+        $radius = $radius ?? '0px';
+
+        $borderSideCheck = function ($s) use ($side) {
+            $bSide = strtolower($side);
+            return false !== strpos($bSide, 'all') || false !== strpos($bSide, $s);
+        };
+
+        $noWidth = $width === '0px' || !$width;
+        $borderCSS = "$width $style $color";
+
+        $styles = '';
+        foreach (['top', 'right', 'bottom', 'left'] as $s) {
+            if (!$noWidth && $borderSideCheck($s)) {
+                $styles .= "border-$s: $borderCSS;";
+            }
+        }
+        if ($radius) {
+            $styles .= "border-radius: $radius;";
+        }
+
+        return $styles;
+    }
+
+
+    function generateCss($value, $cssProperty)
+    {
+        return !$value ? '' : "$cssProperty: $value;";
+    }
+
+    function getTypoCSS($selector, $typo, $isFamily = true)
+    {
+        extract($typo);
+        $fontFamily = $fontFamily ?? 'Default';
+        $fontCategory = $fontCategory ?? 'sans-serif';
+        $fontVariant = $fontVariant ?? 400;
+        $fontWeight = $fontWeight ?? 400;
+        $isUploadFont = $isUploadFont ?? true;
+        $fontSize = $fontSize ?? ['desktop' => 15, 'tablet' => 15, 'mobile' => 15];
+        $fontStyle = $fontStyle ?? 'normal';
+        $textTransform = $textTransform ?? 'none';
+        $textDecoration = $textDecoration ?? 'auto';
+        $lineHeight = $lineHeight ?? '135%';
+        $letterSpace = $letterSpace ?? '0px';
+
+        $isEmptyFamily = !$isFamily || !$fontFamily || 'Default' === $fontFamily;
+        $desktopFontSize = $fontSize['desktop'] ?? $fontSize;
+        $tabletFontSize = $fontSize['tablet'] ?? $desktopFontSize;
+        $mobileFontSize = $fontSize['mobile'] ?? $tabletFontSize;
+
+        $styles = ($isEmptyFamily ? '' : "font-family: '$fontFamily', $fontCategory;")
+            . self::generateCss($fontWeight, 'font-weight')
+            . 'font-size: ' . $desktopFontSize . 'px;'
+            . self::generateCss($fontStyle, 'font-style')
+            . self::generateCss($textTransform, 'text-transform')
+            . self::generateCss($textDecoration, 'text-decoration')
+            . self::generateCss($lineHeight, 'line-height')
+            . self::generateCss($letterSpace, 'letter-spacing');
+
+        // Google font link
+        $linkQuery = (!$fontVariant || 400 === $fontVariant) ? '' : ('400i' === $fontVariant ? ':ital@1' : (false !== strpos($fontVariant, '00i') ? ': ital, wght@1, ' . str_replace('00i', '00', $fontVariant) . ' ' : ": wght@$fontVariant "));
+
+        $link = $isEmptyFamily ? '' : 'https://fonts.googleapis.com/css2?family=' . str_replace(' ', '+', $fontFamily) . "$linkQuery&display=swap";
+
+        return [
+            'googleFontLink' => !$isUploadFont || $isEmptyFamily ? '' : "@import url( $link );",
+            'styles' => preg_replace('/\s+/', ' ', trim("
+                $selector{ $styles }
+                @media (max-width: 768px) {
+                    $selector{ font-size: $tabletFontSize" . "px; }
+                }
+                @media (max-width: 576px) {
+                    $selector{ font-size: $mobileFontSize" . "px; }
+                }
+            "))
+        ];
+    }
+
+
+
+
     public function onInit()
     {
-        wp_register_style('bBlocks-p-compare-style', plugins_url('dist/style.css', __DIR__), [], B_BLOCKS_VERSION);
-        wp_register_style('bBlocks-p-compare-editor-style', plugins_url('dist/editor.css', __DIR__), ['bBlocks-p-compare-style'], B_BLOCKS_VERSION);
+        wp_register_style('b-blocks-product-compare-style', plugins_url('dist/style.css', __DIR__), [], B_BLOCKS_VERSION);
+        wp_register_style('b-blocks-product-compare-editor-style', plugins_url('dist/editor.css', __DIR__), ['b-blocks-product-compare-style'], B_BLOCKS_VERSION);
 
         register_block_type(__DIR__, [
-            'editor_style'      => 'bBlocks-p-compare-editor-style',
+            'editor_style'      => 'b-blocks-product-compare-editor-style',
             'render_callback'   => [$this, 'render']
         ]);
 
-        wp_set_script_translations('bBlocks-p-compare-script', 'text-path', plugin_dir_path(__DIR__) . 'languages');
+        wp_set_script_translations('b-blocks-product-compare-script', 'text-path', plugin_dir_path(__DIR__) . 'languages');
     }
 
     public function render($attributes)
     {
         extract($attributes);
+        extract($btnStyle);
 
-        // printf($attributes);
+        // print_r($typography);
 
-        ['cId' => $cId, 'productIds' => $productIds, 'alignment' => $alignment, 'location' => $location, 'fbUrl' => $fbUrl, 'btnType' => $btnType, 'layout' => $layout, 'shareOffOn' => $shareOffOn, 'showFaces' => $showFaces,  'size' => $size, 'background' => $background, 'padding' => $padding] = $attributes;
+        // $btnStyle = $btnStyle ?? [
+        //     "typography" => [
+        //         "fontSize" => [
+        //             "desktop" => "16"
+        //         ]
+        //     ]
+        // ];
 
-        // printf($padding);
+        // printf($typography);
 
-        wp_enqueue_style('bBlocks-p-compare-style');
-        wp_enqueue_script('bBlocks-p-compare-script', plugins_url('dist/script.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
+        wp_enqueue_style('b-blocks-product-compare-style');
+        // wp_enqueue_script('b-blocks-product-compare-script', plugins_url('dist/script.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
 
         $className = $className ?? '';
-        $blockClassName = esc_attr("bBlocks-p-compare $className");
+        $blockClassName = "wp-block-b-blocks-product-compare $className align$align";
 
         ob_start(); ?>
 
-        <div class='<?php echo $blockClassName; ?>' id='bBlocks-p-compare-<?php echo esc_attr($cId); ?>' data-attributes='<?php echo wp_json_encode($attributes); ?>'>
+        <div class='<?php echo $blockClassName; ?>' id='bBlocksProductCompare-<?php echo esc_attr($cId); ?>' data-attributes='<?php echo wp_json_encode($attributes); ?>'>
             <style>
-                .eael-wcpc-wrapper .eael-wcpc-table th,
-                .eael-wcpc-wrapper .eael-wcpc-table td {
-                    text-align: <?php echo $alignment; ?>;
-                    padding: <?php echo implode(' ',  $padding); ?>;
+                <?php
+                echo $this->getTypoCSS('', $btnStyle['typography'])['googleFontLink'];
+                echo $this->getTypoCSS(".wp-block-b-blocks-product-compare table td .add_to_cart_button", $btnStyle['typography'])['styles'];
+                ?>.wp-block-b-blocks-product-compare .bBlocksProductCompare table th,
+                .wp-block-b-blocks-product-compare .bBlocksProductCompare table td {
+                    text-align: <?php echo esc_attr($alignment); ?>;
+                    padding: <?php echo esc_attr(implode(' ', $padding)); ?>;
+                    <?php echo $this->getBorderCSS($border); ?>;
+                    <?php echo $this->getBackgroundCSS($background); ?>;
                 }
+
+                /* <?php
+                    // echo $this->getTypoCSS('.wp-block-b-blocks-product-compare table td .add_to_cart_button', $typography)['styles'];
+
+                    ?> */
+                    
+                <?php
+                echo $this->getTypoCSS('.wp-block-b-blocks-product-compare table td .add_to_cart_button', $typography)['googleFontLink'];
+                echo $this->getTypoCSS(".wp-block-b-blocks-product-compare table td .add_to_cart_button", $typography)['styles'];
+                ?>
             </style>
-
-
 
             <?php
             if (class_exists('WooCommerce')) {
@@ -54,6 +187,7 @@ class BBlockProductCompare
             }
             ?>
         </div>
+
 
         </div>
 
@@ -102,9 +236,8 @@ class BBlockProductCompare
         }
     ?>
 
-        <div class="eael-wcpc-wrapper woocommerce">
-
-            <table class="eael-wcpc-table table-responsive">
+        <div class="bBlocksProductCompare">
+            <table>
                 <tbody>
                     <?php
                     foreach ($tableData as $key => $data) {
