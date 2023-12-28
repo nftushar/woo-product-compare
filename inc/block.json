@@ -33,14 +33,6 @@
       "type": "string",
       "default": "center"
     },
-    "fbUrl": {
-      "type": "string",
-      "default": "https://www.facebook.com/bPluginsLLC"
-    },
-    "btnType": {
-      "type": "string",
-      "default": "recommend"
-    },
     "layout": {
       "type": "string",
       "default": "box_count"
@@ -80,7 +72,11 @@
       "type": "object",
       "default": {
         "colors": {
-          "color": "#3498db"
+          "color": "#333",
+          "bg": "#0000"
+        },
+        "border": {
+          "radius": "5px"
         },
         "padding": {
           "top": "20px",

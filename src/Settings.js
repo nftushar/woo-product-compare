@@ -5,7 +5,7 @@ import { InspectorControls } from "@wordpress/block-editor";
 import { PanelBody, TabPanel, __experimentalBoxControl as BoxControl, SelectControl } from "@wordpress/components";
 // import { produce } from 'immer';
 
-import { BtnGroup, MultiSelectControl, Background, BorderControl, Typography } from "../../Components";
+import { BtnGroup, MultiSelectControl, Background, BorderControl, Typography, ColorsControl } from "../../Components";
 import { useEffect } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
 const wcpcAlignments = [
@@ -23,7 +23,7 @@ const wcpcAlignments = [
 
 const Settings = ({ attributes, setAttributes, products }) => {
 	const { size, background, productIds, padding, alignment, border, btnStyle } = attributes;
-	const { typography } = btnStyle;
+	const { typography, colors, border: btnBorder } = btnStyle;
 
 	const [ids, setIds] = useState([]);
 
@@ -53,10 +53,24 @@ const Settings = ({ attributes, setAttributes, products }) => {
 								className="bPlPanelBody"
 								title={__("Product Compare", "wcpc")} >
 
+								<BorderControl
+									label={__("Btn Border", "wcpc")}
+									value={btnBorder}
+									onChange={(val) => setAttributes({ btnStyle: { ...btnStyle, border: val } })}
+									defaults={{ radius: "5px" }}
+								/>
+
+
+								<ColorsControl
+									label={__("Btn Color:", "wcpc")}
+									value={colors}
+									onChange={val => setAttributes({ btnStyle: { ...btnStyle, colors: val, bg: colors } })}
+									defaults={{ color: '#333', bg: '#0000' }} />
+
 								<Typography
 									label={__("Typography", "wcpc")}
 									value={typography}
-									onChange={(val) => setAttributes({ btnStyle: { typography: val } })}
+									onChange={(val) => setAttributes({ btnStyle: { ...btnStyle, typography: val } })}
 								/>
 
 								{ids?.length ? (
@@ -100,13 +114,13 @@ const Settings = ({ attributes, setAttributes, products }) => {
 								/>
 								<PanelBody title={__("Product Compare", "wcpc")} className="mt20 bPlPanelBody">
 									<Background
-										label={__("Background Color", "text-domain")}
+										label={__("Background Color", "wcpc")}
 										value={background}
 										onChange={(val) => setAttributes({ background: val })}
 										defaults={{ color: "#000" }} />
 
 									<BorderControl
-										label={__("Border:", "text-domain")}
+										label={__("Border:", "wcpc")}
 										value={border}
 										onChange={(val) => setAttributes({ border: val })}
 										defaults={{ radius: "5px" }}

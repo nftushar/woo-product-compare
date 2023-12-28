@@ -115,7 +115,22 @@ class BBlockProductCompare
             "))
         ];
     }
+    function getColorsCSS($colors)
+    {
+        extract($colors);
+        $color = $color ?? '#333';
+        $bgType = $bgType ?? 'solid';
+        $bg = $bg ?? '#0000';
+        $gradient = $gradient ?? 'linear-gradient(135deg, #4527a4, #8344c5)';
 
+        $background = $bgType === 'gradient' ? $gradient : $bg;
+
+        $styles = '';
+        $styles .= $color ? "color: $color;" : '';
+        $styles .= ($gradient || $bg) ? "background: $background;" : '';
+
+        return $styles;
+    }
 
 
 
@@ -135,46 +150,43 @@ class BBlockProductCompare
     public function render($attributes)
     {
         extract($attributes);
-        extract($btnStyle);
 
-        // print_r($typography);
-
-        // $btnStyle = $btnStyle ?? [
-        //     "typography" => [
-        //         "fontSize" => [
-        //             "desktop" => "16"
-        //         ]
-        //     ]
-        // ];
-
-        // printf($typography);
 
         wp_enqueue_style('b-blocks-product-compare-style');
-        // wp_enqueue_script('b-blocks-product-compare-script', plugins_url('dist/script.js', __DIR__), ['react', 'react-dom'], B_BLOCKS_VERSION, true);
 
         $className = $className ?? '';
         $blockClassName = "wp-block-b-blocks-product-compare $className align$align";
 
-        ob_start(); ?>
+
+        ob_start(); 
+        // print_r($btnStyle);
+        
+        ?>
 
         <div class='<?php echo $blockClassName; ?>' id='bBlocksProductCompare-<?php echo esc_attr($cId); ?>' data-attributes='<?php echo wp_json_encode($attributes); ?>'>
             <style>
-                <?php
+                <?php 
                 echo $this->getTypoCSS('', $btnStyle['typography'])['googleFontLink'];
                 echo $this->getTypoCSS(".wp-block-b-blocks-product-compare table td .add_to_cart_button", $btnStyle['typography'])['styles'];
                 ?>.wp-block-b-blocks-product-compare .bBlocksProductCompare table th,
                 .wp-block-b-blocks-product-compare .bBlocksProductCompare table td {
                     text-align: <?php echo esc_attr($alignment); ?>;
                     padding: <?php echo esc_attr(implode(' ', $padding)); ?>;
-                    <?php echo $this->getBorderCSS($border); ?>;
-                    <?php echo $this->getBackgroundCSS($background); ?>;
+                    <?php echo $this->getBorderCSS($border); ?><?php echo $this->getBackgroundCSS($background); ?>
                 }
 
-                /* <?php
-                    // echo $this->getTypoCSS('.wp-block-b-blocks-product-compare table td .add_to_cart_button', $typography)['styles'];
+                .wp-block-b-blocks-product-compare table td .add_to_cart_button {
+                    <?php
+                    if (isset($btnStyle['colors'])) {
+                        echo esc_html($this->getColorsCSS($btnStyle['colors'], $btnStyle['bg']));
+                    }
+                    ?><?php echo $this->getBorderCSS($btnStyle['border']); ?>
+                }
 
-                    ?> */
-                    
+
+
+
+
                 <?php
                 echo $this->getTypoCSS('.wp-block-b-blocks-product-compare table td .add_to_cart_button', $typography)['googleFontLink'];
                 echo $this->getTypoCSS(".wp-block-b-blocks-product-compare table td .add_to_cart_button", $typography)['styles'];
