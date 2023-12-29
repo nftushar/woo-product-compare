@@ -23,7 +23,7 @@ const wcpcAlignments = [
 
 const Settings = ({ attributes, setAttributes, products }) => {
 	const { size, background, productIds, padding, alignment, border, btnStyle } = attributes;
-	const { typography, colors, border: btnBorder } = btnStyle;
+	const { typography, colors, hvrColors, border: btnBorder } = btnStyle;
 
 	const [ids, setIds] = useState([]);
 
@@ -59,13 +59,17 @@ const Settings = ({ attributes, setAttributes, products }) => {
 									onChange={(val) => setAttributes({ btnStyle: { ...btnStyle, border: val } })}
 									defaults={{ radius: "5px" }}
 								/>
-
-
 								<ColorsControl
 									label={__("Btn Color:", "wcpc")}
 									value={colors}
 									onChange={val => setAttributes({ btnStyle: { ...btnStyle, colors: val, bg: colors } })}
-									defaults={{ color: '#333', bg: '#0000' }} />
+									defaults={{ color: '#222', bg: '#111' }} />
+
+								<ColorsControl
+									label={__("Btn hvr Color:", "wcpc")}
+									value={hvrColors}
+									onChange={val => setAttributes({ btnStyle: { ...btnStyle, hvrColors: val, bg: hvrColors } })}
+									defaults={{ color: '#333', bg: '#0000' }} /> 
 
 								<Typography
 									label={__("Typography", "wcpc")}

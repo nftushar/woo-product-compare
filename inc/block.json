@@ -75,6 +75,10 @@
           "color": "#333",
           "bg": "#0000"
         },
+        "hvrColors": {
+          "color": "#111",
+          "bg": "#2222"
+        },
         "border": {
           "radius": "5px"
         },

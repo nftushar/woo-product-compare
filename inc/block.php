@@ -151,6 +151,7 @@ class BBlockProductCompare
     {
         extract($attributes);
 
+ 
 
         wp_enqueue_style('b-blocks-product-compare-style');
 
@@ -182,8 +183,14 @@ class BBlockProductCompare
                     }
                     ?><?php echo $this->getBorderCSS($btnStyle['border']); ?>
                 }
-
-
+                
+                .wp-block-b-blocks-product-compare table td .add_to_cart_button:hover {
+                    <?php
+                    if (isset($btnStyle['hvrColors'])) {
+                        echo esc_html($this->getColorsCSS($btnStyle['hvrColors'], $btnStyle['bg']));
+                    }
+                    ?> 
+                }
 
 
 
