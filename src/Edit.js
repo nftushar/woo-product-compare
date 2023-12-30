@@ -9,9 +9,7 @@ import Settings from './Settings';
 
 const Edit = ({ clientId, name, className, attributes, setAttributes, products }) => {
   const { productIds } = attributes;
-
-
-  // console.log(productIds.length);
+ 
 
   useEffect(() => {
     clientId && setAttributes({ cId: clientId });

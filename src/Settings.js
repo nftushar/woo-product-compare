@@ -15,13 +15,10 @@ const wcpcAlignments = [
 
 
 const Settings = ({ attributes, setAttributes, products }) => {
+ 
 	const { background, productIds, padding, alignment, border, btnStyle } = attributes;
-	const { typography, colors, hvrColors, border: btnBorder } = btnStyle;
-
+	const { typography, colors, hvrColors, border: btnBorder, padding: btnPadding } = btnStyle;
 	const [ids, setIds] = useState([]);
-
-
-	// console.log(typography);
 
 	useEffect(() => {
 		if (products?.length) {
@@ -71,19 +68,20 @@ const Settings = ({ attributes, setAttributes, products }) => {
 									options={wcpcAlignments}
 									isIcon={true}
 								/>
-
-								<BoxControl
-									label={__("Padding", "wcpc")}
-									values={padding}
-									resetValues={{
-										top: "0px",
-										right: "0px",
-										bottom: "0px",
-										left: "0px",
-									}}
-									onChange={(value) => setAttributes({ padding: value })}
-								/>
 								<PanelBody title={__("Product Styles", "wcpc")} className="mt20 bPlPanelBody" initialOpen={false}>
+
+
+									<BoxControl
+										label={__("Padding", "wcpc")}
+										values={padding}
+										resetValues={{
+											top: "0px",
+											right: "0px",
+											bottom: "0px",
+											left: "0px",
+										}}
+										onChange={(value) => setAttributes({ padding: value })}
+									/>
 									<Background
 										label={__("Background Color", "wcpc")}
 										value={background}
@@ -98,17 +96,28 @@ const Settings = ({ attributes, setAttributes, products }) => {
 									/>
 								</PanelBody>
 								<PanelBody title={__("Button Styles", "wcpc")} className="mt20 bPlPanelBody" initialOpen={false}>
+
+
+									<BoxControl
+										label={__("Padding", "wcpc")}
+										values={btnPadding}
+										resetValues={{
+											top: "20px",
+											left: "20px",
+											bottom: "25px",
+											right: "25px",
+										}}
+										onChange={val => setAttributes({ btnStyle: { ...btnStyle, padding: val } })}
+									/>
 									<ColorsControl
 										label={__("Color:", "wcpc")}
 										value={colors}
-										onChange={val => setAttributes({ btnStyle: { ...btnStyle, colors: val, bg: colors } })}
-										defaults={{ color: '#222', bg: '#111' }} />
+										onChange={val => setAttributes({ btnStyle: { ...btnStyle, colors: val, bg: colors } })} />
 
 									<ColorsControl
 										label={__("Hover Color:", "wcpc")}
 										value={hvrColors}
-										onChange={val => setAttributes({ btnStyle: { ...btnStyle, hvrColors: val, bg: hvrColors } })}
-										defaults={{ color: '#333', bg: '#0000' }} />
+										onChange={val => setAttributes({ btnStyle: { ...btnStyle, hvrColors: val, bg: hvrColors } })} />
 									<BorderControl
 										label={__("Button Border", "wcpc")}
 										value={btnBorder}

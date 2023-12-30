@@ -147,12 +147,29 @@ class BBlockProductCompare
         wp_set_script_translations('b-blocks-product-compare-script', 'text-path', plugin_dir_path(__DIR__) . 'languages');
     }
 
+
+
+    private function generatePaddingCSS($padding)
+    {
+        $paddingValues = [
+            'top'    => esc_attr($padding['top']),
+            'right'  => esc_attr($padding['right']),
+            'bottom' => esc_attr($padding['bottom']),
+            'left'   => esc_attr($padding['left']),
+        ];
+
+        return implode(' ', $paddingValues);
+    }
+
+
+
+
+
+
+
     public function render($attributes)
     {
-        extract($attributes);
-
- 
-
+        extract($attributes); 
         wp_enqueue_style('b-blocks-product-compare-style');
 
         $className = $className ?? '';
@@ -160,13 +177,12 @@ class BBlockProductCompare
 
 
         ob_start(); 
-        // print_r($btnStyle);
-        
-        ?>
+
+?>
 
         <div class='<?php echo $blockClassName; ?>' id='bBlocksProductCompare-<?php echo esc_attr($cId); ?>' data-attributes='<?php echo wp_json_encode($attributes); ?>'>
             <style>
-                <?php 
+                <?php
                 echo $this->getTypoCSS('', $btnStyle['typography'])['googleFontLink'];
                 echo $this->getTypoCSS(".wp-block-b-blocks-product-compare table td .add_to_cart_button", $btnStyle['typography'])['styles'];
                 ?>.wp-block-b-blocks-product-compare .bBlocksProductCompare table th,
@@ -174,23 +190,38 @@ class BBlockProductCompare
                     text-align: <?php echo esc_attr($alignment); ?>;
                     padding: <?php echo esc_attr(implode(' ', $padding)); ?>;
                     <?php echo $this->getBorderCSS($border); ?><?php echo $this->getBackgroundCSS($background); ?>
-                }
+                } 
 
                 .wp-block-b-blocks-product-compare table td .add_to_cart_button {
                     <?php
                     if (isset($btnStyle['colors'])) {
                         echo esc_html($this->getColorsCSS($btnStyle['colors'], $btnStyle['bg']));
                     }
-                    ?><?php echo $this->getBorderCSS($btnStyle['border']); ?>
-                }
-                
+                    ?>;
+                    <?php echo $this->getBorderCSS($btnStyle['border']); ?>;
+                    padding: <?php echo esc_attr(
+                                    implode(
+                                        ' ',
+                                        [
+                                            esc_attr($btnStyle['padding']['top']),
+                                            esc_attr($btnStyle['padding']['right']),
+                                            esc_attr($btnStyle['padding']['bottom']),
+                                            esc_attr($btnStyle['padding']['left']),
+                                        ]
+                                    )
+                                ); ?>;
+
+                } 
+
                 .wp-block-b-blocks-product-compare table td .add_to_cart_button:hover {
                     <?php
                     if (isset($btnStyle['hvrColors'])) {
                         echo esc_html($this->getColorsCSS($btnStyle['hvrColors'], $btnStyle['bg']));
                     }
-                    ?> 
+                    ?>
                 }
+
+                ;
 
 
 
@@ -244,7 +275,7 @@ class BBlockProductCompare
             $tableData['Description'][$index]  = $product->get_description();
             $tableData['Image'][$index]        = wp_get_attachment_url($product->get_image_id());
             $tableData['Price'][$index]        = $product->get_price_html();
-            $tableData['Add to cart'][$index]  = '<a href="' . esc_url(add_query_arg('add-to-cart', $product->get_id(), $product->get_permalink())) . '" class="button add_to_cart_button">Add to Cart</a>';
+            $tableData['Add to cart'][$index]  = '<a href="' . esc_url(add_query_arg('add-to-cart', $product->get_id(), $product->get_permalink())) . '" class="add_to_cart_button">Add to Cart</a>';
             $tableData['SKU'][$index]          = $product->get_sku();
             $tableData['Availability'][$index] = $product->is_in_stock() ? 'In stock' : 'Out of stock';
             $tableData['Weight'][$index]       = $product->get_weight();

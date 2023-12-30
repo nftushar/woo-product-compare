@@ -26,7 +26,9 @@
     "border": {
       "type": "object",
       "default": {
-        "radius": "5px"
+        "radius": "5px",
+          "color":"#000", 
+          "width":"1px"
       }
     },
     "alignment": {
@@ -68,21 +70,23 @@
       "type": "object",
       "default": {
         "colors": {
-          "color": "#333",
-          "bg": "#0000"
+          "color": "#fff",
+          "bg": "#525CEB"
         },
         "hvrColors": {
           "color": "#111",
-          "bg": "#2222"
+          "bg": "#FF9800"
         },
         "border": {
-          "radius": "5px"
+          "radius": "5px",
+          "color": "#333",
+          "width": "1px"
         },
         "padding": {
-          "top": "20px",
-          "left": "20px",
-          "bottom": "25px",
-          "right": "25px"
+          "top": "10px",
+          "right": "20px",
+          "bottom": "10px",
+          "left": "20px"
         },
         "typography": {
           "fontSize": {
