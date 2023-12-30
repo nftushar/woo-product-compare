@@ -151,32 +151,28 @@ class BBlockProductCompare
 
     private function generatePaddingCSS($padding)
     {
-        $paddingValues = [
-            'top'    => esc_attr($padding['top']),
-            'right'  => esc_attr($padding['right']),
-            'bottom' => esc_attr($padding['bottom']),
-            'left'   => esc_attr($padding['left']),
-        ];
+        $paddingValues = array_map(
+            'esc_attr',
+            [
+                $padding['top'],
+                $padding['right'],
+                $padding['bottom'],
+                $padding['left'],
+            ]
+        );
 
         return implode(' ', $paddingValues);
     }
 
 
-
-
-
-
-
     public function render($attributes)
     {
-        extract($attributes); 
+        extract($attributes);
         wp_enqueue_style('b-blocks-product-compare-style');
 
         $className = $className ?? '';
         $blockClassName = "wp-block-b-blocks-product-compare $className align$align";
-
-
-        ob_start(); 
+        ob_start();
 
 ?>
 
@@ -190,7 +186,7 @@ class BBlockProductCompare
                     text-align: <?php echo esc_attr($alignment); ?>;
                     padding: <?php echo esc_attr(implode(' ', $padding)); ?>;
                     <?php echo $this->getBorderCSS($border); ?><?php echo $this->getBackgroundCSS($background); ?>
-                } 
+                }
 
                 .wp-block-b-blocks-product-compare table td .add_to_cart_button {
                     <?php
@@ -199,19 +195,8 @@ class BBlockProductCompare
                     }
                     ?>;
                     <?php echo $this->getBorderCSS($btnStyle['border']); ?>;
-                    padding: <?php echo esc_attr(
-                                    implode(
-                                        ' ',
-                                        [
-                                            esc_attr($btnStyle['padding']['top']),
-                                            esc_attr($btnStyle['padding']['right']),
-                                            esc_attr($btnStyle['padding']['bottom']),
-                                            esc_attr($btnStyle['padding']['left']),
-                                        ]
-                                    )
-                                ); ?>;
-
-                } 
+                    padding: <?php echo $this->generatePaddingCSS($btnStyle['padding']); ?>;
+                }
 
                 .wp-block-b-blocks-product-compare table td .add_to_cart_button:hover {
                     <?php
