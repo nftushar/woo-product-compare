@@ -49,10 +49,6 @@
       "type": "string",
       "default": "dark"
     },
-    "size": {
-      "type": "string",
-      "default": "large"
-    },
     "background": {
       "type": "object",
       "default": {

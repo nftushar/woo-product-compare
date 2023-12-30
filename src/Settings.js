@@ -2,27 +2,20 @@
 import { useState } from 'react';
 import { __ } from "@wordpress/i18n";
 import { InspectorControls } from "@wordpress/block-editor";
-import { PanelBody, TabPanel, __experimentalBoxControl as BoxControl, SelectControl } from "@wordpress/components";
-// import { produce } from 'immer';
-
+import { PanelBody, TabPanel, __experimentalBoxControl as BoxControl } from "@wordpress/components";
 import { BtnGroup, MultiSelectControl, Background, BorderControl, Typography, ColorsControl } from "../../Components";
 import { useEffect } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
+
 const wcpcAlignments = [
 	{ label: __('left', 'wcpc'), value: 'left', icon: 'editor-alignleft' },
 	{ label: __('center', 'wcpc'), value: 'center', icon: 'editor-aligncenter' },
 	{ label: __('right', 'wcpc'), value: 'right', icon: 'editor-alignright' }
 ];
 
-// const options = [
-// 	{ label: 'Option 1', value: 'option1' },
-// 	{ label: 'Option 2', value: 'option2' },
-// 	{ label: 'Option 3', value: 'option3' },
-// ];
-
 
 const Settings = ({ attributes, setAttributes, products }) => {
-	const { size, background, productIds, padding, alignment, border, btnStyle } = attributes;
+	const { background, productIds, padding, alignment, border, btnStyle } = attributes;
 	const { typography, colors, hvrColors, border: btnBorder } = btnStyle;
 
 	const [ids, setIds] = useState([]);
@@ -52,31 +45,6 @@ const Settings = ({ attributes, setAttributes, products }) => {
 							<PanelBody
 								className="bPlPanelBody"
 								title={__("Product Compare", "wcpc")} >
-
-								<BorderControl
-									label={__("Btn Border", "wcpc")}
-									value={btnBorder}
-									onChange={(val) => setAttributes({ btnStyle: { ...btnStyle, border: val } })}
-									defaults={{ radius: "5px" }}
-								/>
-								<ColorsControl
-									label={__("Btn Color:", "wcpc")}
-									value={colors}
-									onChange={val => setAttributes({ btnStyle: { ...btnStyle, colors: val, bg: colors } })}
-									defaults={{ color: '#222', bg: '#111' }} />
-
-								<ColorsControl
-									label={__("Btn hvr Color:", "wcpc")}
-									value={hvrColors}
-									onChange={val => setAttributes({ btnStyle: { ...btnStyle, hvrColors: val, bg: hvrColors } })}
-									defaults={{ color: '#333', bg: '#0000' }} /> 
-
-								<Typography
-									label={__("Typography", "wcpc")}
-									value={typography}
-									onChange={(val) => setAttributes({ btnStyle: { ...btnStyle, typography: val } })}
-								/>
-
 								{ids?.length ? (
 									<MultiSelectControl
 										label={__("MultiSelect Control", "wcpc")}
@@ -87,14 +55,13 @@ const Settings = ({ attributes, setAttributes, products }) => {
 									<Spinner />
 								)}
 
-
 							</PanelBody>
 						)}
 
 						{tab.name === "style" && (
 							<PanelBody
 								className="bPlPanelBody"
-								title={__("Button Control", "wcpc")}
+								title={__("Product Controls", "wcpc")}
 							>
 								<BtnGroup
 									className="mb20"
@@ -116,7 +83,7 @@ const Settings = ({ attributes, setAttributes, products }) => {
 									}}
 									onChange={(value) => setAttributes({ padding: value })}
 								/>
-								<PanelBody title={__("Product Compare", "wcpc")} className="mt20 bPlPanelBody">
+								<PanelBody title={__("Product Styles", "wcpc")} className="mt20 bPlPanelBody" initialOpen={false}>
 									<Background
 										label={__("Background Color", "wcpc")}
 										value={background}
@@ -129,19 +96,32 @@ const Settings = ({ attributes, setAttributes, products }) => {
 										onChange={(val) => setAttributes({ border: val })}
 										defaults={{ radius: "5px" }}
 									/>
+								</PanelBody>
+								<PanelBody title={__("Button Styles", "wcpc")} className="mt20 bPlPanelBody" initialOpen={false}>
+									<ColorsControl
+										label={__("Color:", "wcpc")}
+										value={colors}
+										onChange={val => setAttributes({ btnStyle: { ...btnStyle, colors: val, bg: colors } })}
+										defaults={{ color: '#222', bg: '#111' }} />
 
-									<SelectControl
-										className="mt20"
-										label="Size"
-										value={size}
-										options={[
-											{ label: "Large", value: "large" },
-											{ label: "Small", value: "small" },
-										]}
-										onChange={(val) => setAttributes({ size: val })}
-										isIcon={true}
+									<ColorsControl
+										label={__("Hover Color:", "wcpc")}
+										value={hvrColors}
+										onChange={val => setAttributes({ btnStyle: { ...btnStyle, hvrColors: val, bg: hvrColors } })}
+										defaults={{ color: '#333', bg: '#0000' }} />
+									<BorderControl
+										label={__("Button Border", "wcpc")}
+										value={btnBorder}
+										onChange={(val) => setAttributes({ btnStyle: { ...btnStyle, border: val } })}
+										defaults={{ radius: "5px" }}
+									/>
+									<Typography
+										label={__("Typography", "wcpc")}
+										value={typography}
+										onChange={(val) => setAttributes({ btnStyle: { ...btnStyle, typography: val } })}
 									/>
 								</PanelBody>
+
 							</PanelBody>
 						)}
 					</>
