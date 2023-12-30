@@ -206,10 +206,6 @@ class BBlockProductCompare
                     ?>
                 }
 
-                ;
-
-
-
                 <?php
                 echo $this->getTypoCSS('.wp-block-b-blocks-product-compare table td .add_to_cart_button', $typography)['googleFontLink'];
                 echo $this->getTypoCSS(".wp-block-b-blocks-product-compare table td .add_to_cart_button", $typography)['styles'];
