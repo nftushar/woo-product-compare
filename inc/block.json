@@ -2,12 +2,12 @@
   "apiVersion": "1",
   "name": "b-blocks/product-compare",
   "title": "product-compare",
-  "description": "Easy-to-use, WooCommerce product-compare",
+  "description": "Attractive product compare for WooCommerce",
   "category": "widgets",
   "keywords": [
     "product-compare",
     "WooCommerce",
-    "Gutenberg"
+    "product"
   ],
   "textdomain": "product-compare",
   "attributes": {
@@ -27,8 +27,8 @@
       "type": "object",
       "default": {
         "radius": "5px",
-          "color":"#000", 
-          "width":"1px"
+        "color": "#000",
+        "width": "1px"
       }
     },
     "alignment": {
